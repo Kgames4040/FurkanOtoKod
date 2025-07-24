@@ -1,0 +1,79 @@
+body {
+  margin: 0;
+  font-family: 'Open Sans', sans-serif;
+  background-size: cover;
+  background-position: center;
+  overflow-x: hidden;
+}
+
+.select-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: rgba(0,0,0,0.6);
+}
+
+.main-title {
+  font-size: 32px;
+  color: white;
+  margin-bottom: 30px;
+}
+
+.platform-grid {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.platform-card {
+  background-color: rgba(255,255,255,0.1);
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  width: 120px;
+  transition: transform 0.3s, background-color 0.3s;
+  cursor: pointer;
+}
+
+.platform-card:hover {
+  transform: scale(1.1);
+  background-color: rgba(255,255,255,0.2);
+}
+
+.platform-card img {
+  width: 80px;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+.platform-card p {
+  color: white;
+  margin: 0;
+  font-weight: bold;
+}
+
+footer a {
+  color: white;
+  font-size: 14px;
+  text-decoration: underline;
+}
+
+/* Animasyon için */
+.slide-out {
+  animation: slideOut 0.6s forwards;
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+

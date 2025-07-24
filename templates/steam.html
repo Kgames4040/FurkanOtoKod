@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Steam Kod Al</title>
+  <link rel="stylesheet" href="/static/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Fjalla One', sans-serif;
+      background-image: url('/static/arka_planlar/steama.JPG');
+      background-size: cover;
+      background-position: center;
+    }
+
+    input {
+      padding: 12px 20px;
+      border: 1px solid black;
+      border-radius: 50px;
+      background-color: #f0f0f0;
+      margin-bottom: 15px;
+      font-size: 16px;
+      width: 250px;
+      text-align: center;
+      font-family: 'Fjalla One', sans-serif;
+    }
+
+    button {
+      background-color: #007BFF;
+      color: white;
+      border: 1px solid black;
+      padding: 12px 24px;
+      font-size: 16px;
+      border-radius: 50px;
+      animation: slideDown 1s ease-out;
+      font-family: 'Fjalla One', sans-serif;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #c0c0c0;
+    }
+
+    .home-btn {
+      background-color: #28a745;
+      color: white;
+      border: 1px solid black;
+      padding: 12px 24px;
+      font-size: 16px;
+      border-radius: 50px;
+      margin-top: 15px;
+      font-family: 'Fjalla One', sans-serif;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .home-btn:hover {
+      background-color: #218838;
+    }
+
+    .popup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+    }
+
+    .popup-content {
+      background-color: white;
+      padding: 30px;
+      border-radius: 10px;
+      text-align: center;
+      max-width: 400px;
+      width: 90%;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .code-boxes {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .code-box {
+      width: 50px;
+      height: 60px;
+      border: 2px solid #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      font-weight: bold;
+      background-color: #f0f0f0;
+    }
+
+    .close-btn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #e0e0e0;
+      color: black;
+      border: 1px solid black;
+      border-radius: 50px;
+      cursor: pointer;
+      font-family: 'Fjalla One', sans-serif;
+    }
+
+    .close-btn:hover {
+      background-color: #c0c0c0;
+    }
+
+    .loader {
+      border: 6px solid #f3f3f3;
+      border-top: 6px solid #333;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 20px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" style="text-align: center; padding-top: 80px;">
+    <h1 class="main-title" style="color: limegreen;">Steam Kod Al</h1>
+
+    <div class="input-group" style="margin-top: 30px;">
+      <input type="text" id="username" placeholder="Kullanıcı adını gir" /><br>
+      <input type="text" id="key" placeholder="Ürün anahtarını gir" /><br>
+      <button onclick="getCode()">Giriş Kodu Al</button><br>
+      <button class="home-btn" onclick="goHome()">Ana Sayfaya Dön</button>
+    </div>
+
+    <!-- Loading Popup -->
+    <div id="loading" class="popup hidden">
+      <div class="popup-content">
+        <div class="loader"></div>
+        <p>Kod bekleniyor...</p>
+      </div>
+    </div>
+
+    <!-- Kod Gösterme Popup -->
+    <div id="codeDisplay" class="popup hidden">
+      <div class="popup-content">
+        <h2>Steam Doğrulama Kodu</h2>
+        <p>Kodunuz aşağıda yer almaktadır:</p>
+        <div id="codeBoxes" class="code-boxes"></div>
+        <button class="close-btn" onclick="closecodePopup()">Kapat</button>
+      </div>
+    </div>
+  </div>
+
+  <footer style="position: fixed; bottom: 10px; width: 100%; text-align: center;">
+    <a href="https://www.itemsatis.com/profil/rosewfshop.html" target="_blank" style="color: white; font-size: 14px; text-decoration: underline;">
+      RosewfSoftware ™ 2025 Tüm Hakları Saklıdır
+    </a>
+  </footer>
+
+  <script>
+    async function getCode() {
+      const username = document.getElementById("username").value.trim();
+      const key = document.getElementById("key").value.trim();
+
+      if (!username || !key) {
+        alert("Lütfen kullanıcı adı ve ürün anahtarını girin.");
+        return;
+      }
+
+      document.getElementById("loading").classList.remove("hidden");
+
+      const response = await fetch("/get-code", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, key, platform: "steam" }),
+      });
+
+      const result = await response.json();
+      document.getElementById("loading").classList.add("hidden");
+
+      if (result.code) {
+        const code = result.code.toString().toUpperCase();
+        const boxContainer = document.getElementById("codeBoxes");
+        boxContainer.innerHTML = "";
+
+        for (let char of code) {
+          const box = document.createElement("div");
+          box.className = "code-box";
+          box.textContent = char;
+          boxContainer.appendChild(box);
+        }
+
+        document.getElementById("codeDisplay").classList.remove("hidden");
+      } else {
+        alert(result.error || "Kod alınamadı.");
+      }
+    }
+
+    function closePopup() {
+
+      document.getElementById("codeDisplay").classList.add("hidden");
+      window.location.href = "templates/steam.html";
+    }
+
+    function goHome() {
+      window.location.href = "/";
+    }
+
+    function closecodePopup() {
+      document.getElementById("codeDisplay").style.display = "none";
+    }
+
+    
+  </script>
+</body>
+</html>

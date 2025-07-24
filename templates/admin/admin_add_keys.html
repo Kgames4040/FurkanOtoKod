@@ -1,0 +1,83 @@
+<!-- templates/admin/admin_add_keys.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="/static/admin.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap" rel="stylesheet">
+    <title>‎Key Yönetimi</title>
+    <style>
+        body { background-color: #121212; color: #fff; font-family: sans-serif; padding: 30px; }
+        .platform-section { margin-bottom: 40px; border: 1px solid #555; padding: 20px; border-radius: 10px; }
+        input, select, button {
+            padding: 10px;
+            margin: 5px;
+            background: #1e1e1e;
+            color: #fff;
+            border: 1px solid #555;
+            border-radius: 5px;
+        }
+        h2 { border-bottom: 1px solid #444; padding-bottom: 5px; }
+        ul { list-style: none; padding-left: 0; }
+    </style>
+</head>
+<body>
+    <h1>----->Key Yönetimi</h1>
+
+    <form method="POST">
+        <select name="platform" required>
+            <option value="">Platform Seç</option>
+            {% for plat in keys.keys() %}
+                <option value="{{ plat }}">{{ plat|upper }}</option>
+            {% endfor %}
+        </select>
+        <input type="text" name="new_key" placeholder="Yeni Key" required>
+        <input type="number" name="usage" min="1" value="1" placeholder="Kullanım Hakkı">
+        <button type="submit">Ekle</button>
+    </form>
+
+    <hr>
+
+    {% for plat, keylist in keys.items() %}
+    <div class="platform-section">
+        <h2>{{ plat|upper }} Aktif Keyler</h2>
+        {% if keylist %}
+        <ul>
+            {% for k, count in keylist.items() %}
+                <li>{{ k }} | Kullanım: {{ count }}</li>
+            {% endfor %}
+        </ul>
+        {% else %}
+            <p>Aktif key yok.</p>
+        {% endif %}
+    </div>
+    {% endfor %}
+
+    <footer style="position: fixed; bottom: 10px; width: 100%; text-align: center;">
+        <a href="https://www.itemsatis.com/profil/rosewfshop.html" target="_blank" style="color: white; font-size: 14px; text-decoration: underline;">
+          RosewfSoftware ™ 2025 Tüm Hakları Saklıdır
+        </a>
+      </footer>
+
+    
+
+    <!-- Yan Menü Butonu -->
+    <div class="menu-toggle" onclick="toggleSidebar()">☰</div>
+
+    <!-- Yandan Açılan Menü -->
+    <div class="sidebar" id="sidebar">
+        <ul>
+            <li><a href="/admin/panel">Ana Sayfa</a></li>
+            <li><a href="/admin/add-accounts"> Hesap Ekle</a></li>
+
+            <li><a href="/admin/add-keys">Key Ekle</a></li>
+            <li><a href="/admin/logs">Son Alınan Kodlar</a></li>
+        </ul>
+    </div>
+
+    <script>
+        function toggleSidebar() {
+            document.getElementById("sidebar").classList.toggle("active");
+        }
+    </script>
+</body>
+</html>

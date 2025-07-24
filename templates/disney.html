@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Disney+ Kod Al</title>
+  <link rel="stylesheet" href="/static/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background-image: url('/static/arka_planlar/disneya.JPG');
+      background-size: cover;
+      background-position: center;
+      font-family: 'Fjalla One', sans-serif;
+      color: white;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1.page-title {
+      text-align: center;
+      margin-top: 80px;
+      font-size: 36px;
+      animation: slideDown 1s ease-out;
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-50px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .form-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 50px;
+    }
+
+    .form-container input {
+      width: 80%;
+      max-width: 400px;
+      margin: 10px 0;
+      padding: 14px;
+      font-size: 16px;
+      border: none;
+      border-radius: 50px;
+      background-color: #ffffffdd;
+      color: black;
+      font-family: 'Fjalla One', sans-serif;
+    }
+
+    .form-container button {
+      background-color: #15a0bd;
+      color: white;
+      padding: 14px 28px;
+      border: none;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 50px;
+      margin-top: 15px;
+      transition: background 0.3s;
+      font-family: 'Fjalla One', sans-serif;
+    }
+
+    .form-container button:hover {
+      background-color: #0f297e;
+    }
+
+    .error-message, .code-message {
+      margin-top: 10px;
+      font-size: 15px;
+      display: none;
+      text-align: center;
+      max-width: 400px;
+    }
+
+    .error-message {
+      color: red;
+    }
+
+    .code-message {
+      color: #00ff99;
+    }
+
+    .home-button {
+      background-color: #28a745;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      font-size: 15px;
+      border-radius: 20px;
+      margin: 50px auto;
+      display: block;
+      cursor: pointer;
+      transition: background 0.3s;
+      font-family: 'Fjalla One', sans-serif;
+    }
+
+    .home-button:hover {
+      background-color: #0f297e;
+    }
+
+    .loading-popup {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(255, 255, 255, 0.9);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      flex-direction: column;
+    }
+
+    .loader {
+      border: 6px solid #00000020;
+      border-top: 6px solid black;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      animation: spin 1s linear infinite;
+    }
+
+    .loading-popup p {
+      margin-top: 20px;
+      color: black;
+      font-size: 18px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* CODE POPUP */
+    .code-popup {
+      position: fixed;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: white;
+      padding: 30px 40px;
+      border-radius: 15px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      z-index: 10000;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .code-popup h2 {
+      color: black;
+      margin-bottom: 5px;
+      font-size: 22px;
+    }
+
+    .code-popup p {
+      color: #333;
+      font-size: 14px;
+      margin-bottom: 15px;
+    }
+
+    .code-inputs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .code-box {
+      width: 50px;
+      height: 60px;
+      background-color: #f0f0f0;
+      color: #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 24px;
+      font-weight: bold;
+      border-radius: 8px;
+      box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .popup-close-btn {
+      background-color: #1434A4;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-size: 15px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .popup-close-btn:hover {
+      background-color: #0f297e;
+    }
+  </style>
+</head>
+<body>
+  <h1 class="page-title">Disney+ Kod Al</h1>
+
+  <div class="form-container">
+    <input id="email" type="email" placeholder="Mail adresini gir" required />
+    <input id="key" type="text" placeholder="Ürün anahtarını gir" required />
+    <button onclick="getCode()">Giriş Kodu Al</button>
+    <div class="error-message" id="errorMessage">Hata mesajı buraya gelecek</div>
+    <div class="code-message" id="codeMessage">Kod buraya gelecek</div>
+  </div>
+
+  <a href="/">
+    <button class="home-button">Anasayfaya Dön</button>
+  </a>
+
+  <div class="loading-popup" id="loadingPopup">
+    <div class="loader"></div>
+    <p>Kod bekleniyor...</p>
+  </div>
+
+
+  <footer style="position: fixed; bottom: 10px; width: 100%; text-align: center;">
+    <a href="https://www.itemsatis.com/profil/rosewfshop.html" target="_blank" style="color: white; font-size: 14px; text-decoration: underline;">
+      RosewfSoftware ™ 2025 Tüm Hakları Saklıdır
+    </a>
+  </footer>
+
+
+  <!-- KOD GÖSTERME POP-UP -->
+  <div class="code-popup" id="codePopup">
+    <h2>Disney+ Doğrulama Kodu</h2>
+    <p>Kodunuz aşağıda yer almaktadır</p>
+    <div class="code-inputs" id="codeBoxes"></div>
+    <button class="popup-close-btn" onclick="closePopup()">Kapat</button>
+  </div>
+
+  <script>
+    async function getCode() {
+      const email = document.getElementById('email').value.trim();
+      const key = document.getElementById('key').value.trim();
+      const errorDiv = document.getElementById('errorMessage');
+      const codeDiv = document.getElementById('codeMessage');
+      const loadingPopup = document.getElementById('loadingPopup');
+
+      errorDiv.style.display = 'none';
+      codeDiv.style.display = 'none';
+
+      if (!email || !key) {
+        errorDiv.textContent = "Lütfen tüm alanları doldurun.";
+        errorDiv.style.display = 'block';
+        return;
+      }
+
+      loadingPopup.style.display = 'flex';
+
+      try {
+        const response = await fetch("/get-code", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: email,
+            key: key,
+            platform: "disney"
+          })
+        });
+
+        const result = await response.json();
+        loadingPopup.style.display = 'none';
+
+        if (result.code) {
+          showCodePopup(result.code);
+        } else {
+          errorDiv.textContent = result.error || "Yeni Kod Bulunamadı";
+          errorDiv.style.display = 'block';
+        }
+      } catch (error) {
+        loadingPopup.style.display = 'none';
+        errorDiv.textContent = "Sunucu hatası!";
+        errorDiv.style.display = 'block';
+      }
+    }
+
+    function showCodePopup(code) {
+      const popup = document.getElementById("codePopup");
+      const boxes = document.getElementById("codeBoxes");
+      boxes.innerHTML = "";
+
+      for (let char of code) {
+        const box = document.createElement("div");
+        box.classList.add("code-box");
+        box.textContent = char;
+        boxes.appendChild(box);
+      }
+
+      popup.style.display = "flex";
+    }
+
+    function closePopup() {
+      document.getElementById("codePopup").style.display = "none";
+    }
+  </script>
+</body>
+</html>

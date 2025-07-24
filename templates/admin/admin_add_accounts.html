@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <link rel="stylesheet" href="/static/admin.css">
+  <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <title>Hesap Ekle</title>
+  <style>
+    body {
+      background-color: #111;
+      color: white;
+      font-family: Arial, sans-serif;
+      padding: 40px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    form {
+      max-width: 500px;
+      margin: auto;
+      background-color: #222;
+      padding: 20px;
+      border-radius: 20px;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 10px;
+      background-color: #333;
+      color: white;
+    }
+    button {
+      width: 50%;
+      margin-top: 20px;
+      padding: 12px;
+      background-color: red;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+    }
+    .account-list {
+      margin-top: 40px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .account-item {
+      background-color: #222;
+      padding: 15px;
+      border-radius: 15px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: white;
+      color: black;
+      padding: 20px 30px;
+      border-radius: 50px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.4);
+      display: none;
+      align-items: center;
+      gap: 20px;
+      z-index: 9999;
+    }
+    .toast button {
+      background-color: red;
+      color: white;
+      padding: 5px 15px;
+      border-radius: 30px;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Hesap Ekle</h1>
+  <form method="POST">
+    <select name="platform" required>
+      <option value="" disabled selected>Platform Seç</option>
+      <option value="disney">Disney+</option>
+      <option value="netflix">Netflix</option>
+      <option value="steam">Steam</option>
+    </select>
+    <input type="email" name="email" placeholder="Mail adresi" required />
+    <input type="text" name="password" placeholder="Mail şifresi" required />
+    <input type="text" name="username" placeholder="Steam için kullanıcı adı (diğerleri için boş bırak)" />
+    <button type="submit">Hesap Ekle</button>
+  </form>
+
+  <div class="account-list">
+    {% for account in accounts %}
+      <div class="account-item" id="acc-{{ loop.index }}">
+        <div>
+          <strong>{{ account.platform | upper }}</strong> - {{ account.email }} {% if account.platform == "steam" %} ({{ account.username }}){% endif %}
+        </div>
+        <button onclick="deleteAccount('{{ account.platform }}', '{{ account.email }}', '{{ account.username if account.platform == 'steam' else '' }}', 'acc-{{ loop.index }}')">Sil</button>
+      </div>
+    {% endfor %}
+  </div>
+
+  <footer style="position: fixed; bottom: 10px; width: 100%; text-align: center;">
+    <a href="https://www.itemsatis.com/profil/rosewfshop.html" target="_blank" style="color: white; font-size: 14px; text-decoration: underline;">
+      RosewfSoftware ™ 2025 Tüm Hakları Saklıdır
+    </a>
+  </footer>
+  
+  <div id="toast" class="toast">
+    <span>Hesap başarıyla silindi</span>
+    <button onclick="hideToast()">Kapat</button>
+  </div>
+
+  <script>
+    function deleteAccount(platform, email, username, elementId) {
+      fetch("/admin/delete-account", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `platform=${platform}&email=${encodeURIComponent(email)}&username=${encodeURIComponent(username)}`
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          document.getElementById(elementId).remove(); // Silinen hesabı ekrandan kaldır
+          showToast(); // Toast mesajını göster
+        } else {
+          alert("Hesap silinemedi.");
+        }
+      });
+    }
+
+    function showToast() {
+      document.getElementById("toast").style.display = "flex";
+    }
+
+    function hideToast() {
+      document.getElementById("toast").style.display = "none";
+    }
+  </script>
+
+  <!-- Yan Menü Butonu -->
+  <div class="menu-toggle" onclick="toggleSidebar()">☰</div>
+
+  <!-- Yandan Açılan Menü -->
+  <div class="sidebar" id="sidebar">
+      <ul>
+          <li><a href="/admin/panel">Ana Sayfa</a></li>
+          <li><a href="/admin/add-accounts"> Hesap Ekle</a></li>
+
+          <li><a href="/admin/add-keys">Key Ekle</a></li>
+          <li><a href="/admin/logs">Son Alınan Kodlar</a></li>
+      </ul>
+  </div>
+
+  <script>
+      function toggleSidebar() {
+          document.getElementById("sidebar").classList.toggle("active");
+      }
+  </script>
+  
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kod Al - Platform Seç</title>
+  <link rel="stylesheet" href="/static/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap" rel="stylesheet">
+  <script>
+    function slideAndRedirect(url) {
+      const body = document.body;
+      body.classList.add('slide-out');
+      setTimeout(() => {
+        window.location.href = url;
+      }, 600); // CSS animasyon süresiyle eşleşmeli
+    }
+  </script>
+</head>
+
+<body style="background-image: url('/static/arka_planlar/arka_plan.JPEG'); background-size: cover; background-position: center;" class="select-screen">
+
+  <h2 class="main-title">Platform Seçin</h2>
+
+  <div class="platform-grid">
+    <div class="platform-card" onclick="slideAndRedirect('/disney')">
+      <img src="/static/logos/disney.png" alt="Disney+" />
+      <p>Disney+</p>
+    </div>
+    <div class="platform-card" onclick="slideAndRedirect('/netflix')">
+      <img src="/static/logos/netflix.png" alt="Netflix" />
+      <p>Netflix</p>
+    </div>
+    <div class="platform-card" onclick="slideAndRedirect('/steam')">
+      <img src="/static/logos/steam.png" alt="Steam" />
+      <p>Steam</p>
+    </div>
+  </div>
+
+  <footer style="position: fixed; bottom: 10px; width: 100%; text-align: center;">
+    <a href="https://www.itemsatis.com/profil/rosewfshop.html" target="_blank">
+      RosewfSoftware ™ 2025 Tüm Hakları Saklıdır
+    </a>
+  </footer>
+
+</body>
+</html>

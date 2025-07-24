@@ -1,0 +1,47 @@
+<!-- admin_panel.html içeriği buraya eklenecek -->
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="/static/admin.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Yan Menü Butonu -->
+    <div class="menu-toggle" onclick="toggleSidebar()">☰</div>
+
+    <!-- Yandan Açılan Menü -->
+    <div class="sidebar" id="sidebar">
+        <ul>
+            <li><a href="/admin/panel">Ana Sayfa</a></li>
+            <li><a href="/admin/add-accounts"> Hesap Ekle</a></li>
+            
+            <li><a href="/admin/add-keys">Key Ekle</a></li>
+            <li><a href="/admin/logs">Son Alınan Kodlar</a></li>
+            <li><a href="/">Çıkış Yap</a></li>
+        </ul>
+    </div>
+
+    <footer style="position: fixed; bottom: 10px; width: 100%; text-align: center;">
+        <a href="https://www.itemsatis.com/profil/rosewfshop.html" target="_blank" style="color: black; font-size: 14px; text-decoration: underline;">
+          RosewfSoftware ™ 2025 Tüm Hakları Saklıdır
+        </a>
+      </footer>
+
+    <!-- Ana İçerik -->
+    <div class="main-content">
+        <h1>Mail Oto Kod Teslim Sistemi Yönetim Paneli</h1>
+        <div class="box">
+            <p><strong>Yanda Bulunan Menüden İşlemlere Erişebilirsiniz</strong> {{ platform }}</p>
+            
+        </div>
+    </div>
+
+    <script>
+        function toggleSidebar() {
+            document.getElementById("sidebar").classList.toggle("active");
+        }
+    </script>
+</body>
+</html>

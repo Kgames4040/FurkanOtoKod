@@ -1,0 +1,74 @@
+<!-- admin_logs.html içeriği buraya eklenecek -->
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Son Alınan Kodlar</title>
+    <style>
+        body {
+          background-color: #111;
+          color: white;
+          font-family: Arial, sans-serif;
+            </style>
+            
+    <link rel="stylesheet" href="/static/admin.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap" rel="stylesheet">
+    <style>
+        .logs-box {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 50px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            max-height: 600px;
+            overflow-y: auto;
+        }
+        .log-entry {
+            padding: 10px 0;
+            border-bottom: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+
+    
+    <!-- Yan Menü Butonu -->
+    <div class="menu-toggle" onclick="toggleSidebar()">☰</div>
+
+    <!-- Yandan Açılan Menü -->
+    <div class="sidebar" id="sidebar">
+        <ul>
+            <li><a href="/admin/panel">Ana Sayfa</a></li>
+            
+            <li><a href="/admin/add-accounts"> Hesap Ekle</a></li>
+            
+            <li><a href="/admin/add-keys">Key Ekle</a></li>
+            <li><a href="/admin/logs">Son Alınan Kodlar</a></li>
+        </ul>
+    </div>
+<div class="main-content">
+    <h1>Son Alınan Kodlar</h1>
+    <div class="logs-box">
+        {% for line in logs %}
+        <div class="log-entry">{{ line }}</div>
+        {% endfor %}
+    </div>
+</div>
+
+    <footer style="position: fixed; bottom: 680px; width: 100%; text-align: center;">
+        <a href="https://www.itemsatis.com/profil/rosewfshop.html" target="_blank" style="color: black; font-size: 14px; text-decoration: underline;">
+          RosewfSoftware ™ 2025 Tüm Hakları Saklıdır
+        </a>
+      </footer>
+
+    
+    <script>
+        function toggleSidebar() {
+            document.getElementById("sidebar").classList.toggle("active");
+        }
+    </script>
+
+
+</body>
+</html>
