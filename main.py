@@ -272,6 +272,54 @@ def admin_logout():
     session.pop("admin", None)
     return redirect(url_for("admin_login"))
 
+    
+@app.route("/admin/update-key", methods=["POST"])
+def admin_update_key():
+    if not session.get("admin"): return jsonify({"success": False})
+
+    platform = request.form.get("platform")
+    key = request.form.get("key")
+    new_usage = request.form.get("usage")
+
+    if platform not in PLATFORMS or not key or not new_usage:
+        return jsonify({"success": False})
+
+    try:
+        new_usage = int(new_usage)
+        if new_usage < 1:
+            return jsonify({"success": False})
+    except:
+        return jsonify({"success": False})
+
+    keys = load_keys(PLATFORMS[platform]["key_file"])
+    if key not in keys:
+        return jsonify({"success": False})
+
+    keys[key] = new_usage
+    save_keys(PLATFORMS[platform]["key_file"], keys)
+    return jsonify({"success": True})
+
+    
+@app.route("/admin/delete-key", methods=["POST"])
+def admin_delete_key():
+    if not session.get("admin"): return jsonify({"success": False})
+
+    platform = request.form.get("platform")
+    key = request.form.get("key")
+
+    if platform in PLATFORMS:
+        keys = load_keys(PLATFORMS[platform]["key_file"])
+        if key in keys:
+            keys.pop(key)
+            save_keys(PLATFORMS[platform]["key_file"], keys)
+            return jsonify({"success": True})
+
+    return jsonify({"success": False})
+
+
+
+
+
 # ------------------ UYGULAMA BAŞLAT ------------------
 
 if __name__ == "__main__":
