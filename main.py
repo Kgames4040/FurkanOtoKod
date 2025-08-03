@@ -15,8 +15,8 @@ app.secret_key = "gizli_admin_sifresi"
 
 PLATFORMS = {
     "disney": {
-        "subjects": ["Disney+ için tek seferlik kodunuz", "Disney+ için tek seferlik kodunuz burada"],
-        "allowed_senders": ["disneyplus@trx.mail2.disneyplus.com"],
+        "subjects": ["Disney+ için tek seferlik kodunuz", "ChatGPT kodun"],
+        "allowed_senders": ["noreply@tm.openai.com"],
         "code_regex": r"\b\d{6}\b",
         "key_file": "veri/DISNEY_keys.txt",
         "log_file": "veri/disney_log.txt"
