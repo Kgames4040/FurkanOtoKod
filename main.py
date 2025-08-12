@@ -34,6 +34,15 @@ PLATFORMS = {
         "code_regex": r"\b[A-Z0-9]{5}\b",
         "key_file": "veri/STEAM_keys.txt",
         "log_file": "veri/steam_log.txt"
+    },
+    "konami": {
+        "subjects": ["Enter [KONAMI ID] Confirmation Code", "[KONAMI ID] Verification Code", "[KONAMI ID] Verification Code for Email Address Change", "[KONAMI ID] Save Data Transfer to New Device" , "[KONAMI ID] Update Email Address"
+
+  ],
+        "allowed_senders": ["konami-info@konami.net"],
+        "code_regex": r"\b\d{6}\b",
+        "key_file": "veri/KONAMI_keys.txt",
+        "log_file": "veri/konami_log.txt"
     }
 }
 
@@ -109,6 +118,9 @@ def get_verification_code(platform, identifier):
         try:
             mail = imaplib.IMAP4_SSL("imap.gmail.com")
             mail.login(email_address, password)
+
+            
+            
             mail.select("inbox")
             _, data = mail.search(None, "UNSEEN")
             for num in reversed(data[0].split()):
@@ -156,6 +168,9 @@ def netflix(): return render_template("netflix.html")
 
 @app.route("/steam")
 def steam(): return render_template("steam.html")
+
+@app.route("/konami")
+def konami(): return render_template("konami.html")
 
 @app.route("/get-code", methods=["POST"])
 def get_code():
