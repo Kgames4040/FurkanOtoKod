@@ -47,8 +47,8 @@ PLATFORMS = {
 }
 
 ACCOUNT_FILE = "mail_config/accounts.json"
-ADMIN_USERNAME = "admin"
-ADMIN_PASSWORD = "1234"
+ADMIN_USERNAME = "rosewf"
+ADMIN_PASSWORD = "murfy"
 
 # ------------------ YARDIMCI FONKSİYONLAR ------------------
 
